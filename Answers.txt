@@ -1,0 +1,26 @@
+Q5 - Modify existing tests to run on a real device. What should be changed?
+A - You should change "deviceName" capability from emulator name to real device name.
+ capabilities.setCapability("deviceName", "emulator-5554") =>
+ capabilities.setCapability("deviceName", "13710040515") in my case.
+
+Q6 - Connect a real device to Appium (describe required actions) and run tests.
+    Are there any difference with run on emulator?
+A - Real device is at least 4 secs slower when running Contact Manager app tests (21-41 sec) vs 17-21 sec on virtual one.
+
+    Chrome fails to start on my 4.4.4 tegra device ((( It crushes on each call ((
+    If I set "browserName" capability to "Browser" - Appium fails to communicate with
+
+    "Unable to create a new remote session. Please check the server log for more details.
+    Original error: An unknown server-side error occurred while processing the command.
+    Original error: Unable to automate Chrome version because it is too old for this version of Chromedriver.
+    Chrome version on the device: Chrome/33.0.0.0"
+
+Emulator
+41 sec
+21 sec
+27 sec
+
+Emulator
+17 sec
+17 sec
+

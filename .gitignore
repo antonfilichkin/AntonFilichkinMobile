@@ -1,12 +1,30 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
+# Compiled class file
+.class
 
-# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
-!/.mvn/wrapper/maven-wrapper.jar
+# Log file
+.log
+
+# Package Files #
+.jar
+.war
+.nar
+.ear
+.zip
+.tar.gz
+.rar
+
+# Idea
+.idea/
+
+# Target
+/target
+
+# Build
+/build
+
+# Allure
+/.allure
+/allure-results
+
+# virtual machine crash logs
+hs_err_pid
