@@ -25,6 +25,13 @@ public class FirstSimpleTest extends DriverSetup {
         System.out.println("Simplest Appium test done");
     }
 
+    @Test(description = "Open website")
+    public void webTest() throws InterruptedException {
+        driver.get("http://iana.org");
+        Thread.sleep(5000);
+        System.out.println("Site opening done");
+    }
+
     /**
      * Close driver on all tests completion
      */
