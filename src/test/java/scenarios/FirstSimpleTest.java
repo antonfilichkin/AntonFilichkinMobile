@@ -11,7 +11,8 @@ public class FirstSimpleTest extends DriverSetup {
      */
     @BeforeClass
     public void setUp() throws Exception {
-        prepareAndroidNative();
+        //prepareAndroidNative();
+        prepareAndroidWeb();
     }
 
     /**
