@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import static enums.PropertiesKeys.*;
 import static io.appium.java_client.remote.MobileBrowserType.CHROME;
@@ -19,21 +20,24 @@ import static io.appium.java_client.remote.MobilePlatform.IOS;
 
 
 public class Driver {
-    private static AppiumDriver driver;
-    private static WebDriverWait waitSingle;
-
-    // Set Property File name
     private static String propertyFile;
+    private static AppiumDriver driver;
+    private static WebDriverWait wait;
 
-    public static void setPropertyFile(String propertyFile) {
-        Driver.propertyFile = propertyFile;
+    /**
+     * Property file setter
+     *
+     * @param file - file containing test properties
+     */
+    static void setPropertyFile(String file) {
+        propertyFile = file;
     }
 
     /**
      * Initialize driver with test properties
      */
-    public static void prepareDriver() throws Exception {
-        //Check if Property File name has been set
+    static void prepareDriver() throws Exception {
+        //Check if propertyFile has been set
         if (propertyFile == null) {
             throw new PropertiesNotSetException();
         }
@@ -44,7 +48,7 @@ public class Driver {
         String sut = testProperties.getProperty(SITE_UNDER_TEST);
         String platform = testProperties.getProperty(TEST_PLATFORM);
         String device = testProperties.getProperty(DEVICE_ID);
-        String driver = testProperties.getProperty(DRIVER_URL);
+        String driver_url = testProperties.getProperty(DRIVER_URL);
 
         //Test capabilities
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -78,31 +82,42 @@ public class Driver {
         }
 
         // Init driver for local Appium server with set capabilities
-        if (Driver.driver == null) {
-            Driver.driver = new AppiumDriver(new URL(driver), capabilities);
+        if (driver == null) {
+            driver = new AppiumDriver(new URL(driver_url), capabilities);
         }
 
-        // TODO Do we really need this?
+        // Set driver wait - for element to load
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         // Set an object to handle timeouts
-        if (waitSingle == null) {
-            waitSingle = new WebDriverWait(driver(), 10);
+        if (wait == null) {
+            wait = new WebDriverWait(driver(), 5);
         }
     }
 
     // Get driver instance
-    public static AppiumDriver driver() throws Exception {
+    public static AppiumDriver driver() {
         if (driver == null) {
-            prepareDriver();
+            try {
+                prepareDriver();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return driver;
     }
 
     // Close driver
-    public static void quit() {
+    static void quit() {
         driver.quit();
     }
 
-    private static WebDriverWait driverWait() {
-        return waitSingle;
+    // Get wait object
+    public static WebDriverWait driverWait() {
+        return wait;
+    }
+
+    // Private constructor for singleton
+    private Driver() {
     }
 }

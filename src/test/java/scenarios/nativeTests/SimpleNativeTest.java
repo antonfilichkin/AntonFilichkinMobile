@@ -2,15 +2,15 @@ package scenarios.nativeTests;
 
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
-import scenarios.TestHooks;
+import setup.TestHooks;
 
 import static setup.Driver.driver;
 
-@Test(groups = {"native"})
+@Test(groups = "native")
 public class SimpleNativeTest extends TestHooks {
 
     @Test(description = "Just click on button 'Add contact'")
-    public void simplestTest() throws Exception {
+    public void simplestTest() {
         String app_package_name = "com.example.android.contactmanager:id/";
         By add_btn = By.id(app_package_name + "addContactButton");
         driver().findElement(add_btn).click();
@@ -97,7 +97,7 @@ public class SimpleNativeTest extends TestHooks {
 ////
 ////        Using WebDriverWait object(s) instead of Thread.sleep
 ////
-//        DesiredCapabilities object can't contains non-NULL “app” or “browser” capabilities simultaneously (only one of them)
+//        DesiredCapabilities object can't contains non-NULL “pageObjects.app” or “browser” capabilities simultaneously (only one of them)
 //
 //        Rewrite Driver using “singleton” pattern
 //

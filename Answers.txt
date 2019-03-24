@@ -5,7 +5,7 @@ A - You should change "deviceName" capability from emulator name to real device 
 
 Q6 - Connect a real device to Appium (describe required actions) and run tests.
     Are there any difference with run on emulator?
-A - Real device is at least 4 secs slower when running Contact Manager app tests (21-41 sec) vs 17-21 sec on virtual one.
+A - Real device is at least 4 secs slower when running Contact Manager pageObjects.app tests (21-41 sec) vs 17-21 sec on virtual one.
 
     Chrome fails to start on my 4.4.4 tegra device ((( It crushes on each call ((
     If I set "browserName" capability to "Browser" - Appium fails to communicate with
