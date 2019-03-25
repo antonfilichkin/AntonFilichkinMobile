@@ -1,9 +1,9 @@
 package exceptions;
 
-public class NoAccountIsSet extends Exception {
+public class NoAccountIsSetException extends Exception {
     private final static String MESSAGE = "Account on device is not set";
 
-    public NoAccountIsSet() {
+    public NoAccountIsSetException() {
         super(MESSAGE);
     }
 }

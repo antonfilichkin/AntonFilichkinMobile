@@ -1,4 +1,4 @@
-package enums;
+package enums.setup;
 
 public enum PropertiesKeys {
     DEVICE_ID("device"),

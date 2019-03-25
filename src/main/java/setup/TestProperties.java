@@ -1,6 +1,6 @@
 package setup;
 
-import enums.PropertiesKeys;
+import enums.setup.PropertiesKeys;
 
 import java.io.IOException;
 import java.io.InputStream;

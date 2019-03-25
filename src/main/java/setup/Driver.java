@@ -12,7 +12,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import static enums.PropertiesKeys.*;
+import static enums.setup.PropertiesKeys.*;
 import static io.appium.java_client.remote.MobileBrowserType.CHROME;
 import static io.appium.java_client.remote.MobileBrowserType.SAFARI;
 import static io.appium.java_client.remote.MobilePlatform.ANDROID;
@@ -23,6 +23,10 @@ public class Driver {
     private static String propertyFile;
     private static AppiumDriver driver;
     private static WebDriverWait wait;
+
+    // Private constructor for singleton
+    private Driver() {
+    }
 
     /**
      * Property file setter
@@ -86,7 +90,7 @@ public class Driver {
             driver = new AppiumDriver(new URL(driver_url), capabilities);
         }
 
-        // Set driver wait - for element to load
+        // Set driver wait for elements to load
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         // Set an object to handle timeouts
@@ -115,9 +119,5 @@ public class Driver {
     // Get wait object
     public static WebDriverWait driverWait() {
         return wait;
-    }
-
-    // Private constructor for singleton
-    private Driver() {
     }
 }

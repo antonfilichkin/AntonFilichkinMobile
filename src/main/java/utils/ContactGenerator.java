@@ -1,7 +1,7 @@
 package utils;
 
 import enums.app.ContactTypes;
-import testData.Contact;
+import testData.app.Contact;
 
 import java.util.Random;
 

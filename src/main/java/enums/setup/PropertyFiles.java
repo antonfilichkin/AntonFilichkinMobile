@@ -1,4 +1,4 @@
-package enums;
+package enums.setup;
 
 /**
  * Properties setup moved to testNG.xml

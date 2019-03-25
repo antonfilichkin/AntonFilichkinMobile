@@ -2,8 +2,8 @@ package scenarios.webTests;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import setup.TestHooks;
 import pageObjects.site.org.iana.MainPage;
+import setup.TestHooks;
 
 @Test(groups = "web", description = "Simple iana.org tests")
 public class SimpleWebTest extends TestHooks {

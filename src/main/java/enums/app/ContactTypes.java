@@ -1,14 +1,16 @@
 package enums.app;
 
 public enum ContactTypes {
-    HOME("Home"),
-    WORK("Work"),
-    MOBILE("Mobile"),
-    OTHER("Other");
+    HOME("Home", "Домашний"),
+    WORK("Work", "Рабочий"),
+    MOBILE("Mobile", "Мобильный"),
+    OTHER("Other", "Другой");
 
-    public final String type;
+    public final String typeEN;
+    public final String typeRU;
 
-    ContactTypes(String type) {
-        this.type = type;
+    ContactTypes(String typeEN, String typeRU) {
+        this.typeEN = typeEN;
+        this.typeRU = typeRU;
     }
 }

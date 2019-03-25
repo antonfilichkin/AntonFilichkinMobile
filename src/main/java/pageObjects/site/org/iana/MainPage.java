@@ -9,7 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static enums.site.ExpectedValues.*;
+import static enums.site.ExpectedValues.MAIN_PAGE_INTRO;
+import static enums.site.ExpectedValues.MAIN_PAGE_TITLE;
 import static enums.site.URLs.MAIN_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -32,7 +33,6 @@ public class MainPage {
     @FindBy(css = "#intro")
     @AndroidFindBy(id = "intro")
     private WebElement intro;
-    //private RemoteWebElement intro; // TODO It's not working - Google it!
 
     /**
      * Selenium can't pass http response code by itself - this solution is to check the availability
@@ -50,7 +50,7 @@ public class MainPage {
     }
 
     /**
-     * Check site title
+     * Check page title is as expected
      */
     public void checkTitle() {
         wait.until(ExpectedConditions.urlToBe(url));
@@ -58,7 +58,7 @@ public class MainPage {
     }
 
     /**
-     * Check Intro
+     * Check Intro is as expected
      */
     public void checkIntro() {
         assertThat(intro.isDisplayed(), is(true));

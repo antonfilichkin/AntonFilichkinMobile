@@ -1,8 +1,6 @@
 package pageObjects.app.com.example.android.contactmanager;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -15,7 +13,7 @@ import static setup.Driver.driverWait;
 
 abstract class BasePage {
     AppiumDriver appiumDriver;
-    private WebDriverWait wait;
+    private WebDriverWait wait; //Do we really need this?
 
     private String expectedTitle;
 

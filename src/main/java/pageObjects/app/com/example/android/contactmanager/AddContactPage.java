@@ -1,76 +1,82 @@
 package pageObjects.app.com.example.android.contactmanager;
 
 import enums.app.ContactTypes;
-import exceptions.NoAccountIsSet;
+import exceptions.NoAccountIsSetException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import testData.Contact;
+import org.openqa.selenium.support.FindBys;
+import testData.app.Contact;
 
 import java.util.List;
 
+import static enums.app.PageNames.ADD_CONTACT;
 import static utils.ContactGenerator.generateRandomContact;
 
 public class AddContactPage extends BasePage {
     public AddContactPage() {
-        super("Add Contact");
+        super(ADD_CONTACT.name);
     }
-
-    @FindBy(id = "title")
-    private WebElement title;
 
     @FindBy(id = "accountSpinner")
     private WebElement accountSpinner;
 
+    @FindBys({@FindBy(id = "accountSpinner"),
+            @FindBy(id = "text1")})
+    private WebElement accountSpinnerText;
+
     @FindBy(id = "contactNameEditText")
-    private WebElement contactNameEdit;
+    private WebElement nameEdit;
 
     @FindBy(id = "contactPhoneEditText")
-    private WebElement contactPhoneEdit;
+    private WebElement phoneEdit;
 
     @FindBy(id = "contactPhoneTypeSpinner")
-    private WebElement contactPhoneType;
+    private WebElement phoneType;
 
     @FindBy(id = "contactEmailEditText")
-    private WebElement contactEmailEdit;
+    private WebElement emailEdit;
 
     @FindBy(id = "contactEmailTypeSpinner")
-    private WebElement contactEmailType;
+    private WebElement emailType;
 
     @FindBy(id = "contactSaveButton")
-    private WebElement contactSaveButton;
+    private WebElement saveButton;
 
     @FindBy(id = "text1")
     private List<WebElement> typeDialog;
 
     /**
      * Add contact to Contacts List
-     * @param contact - Contact POJO
+     *
+     * @param contact - Contact to add
      */
     public void addContact(Contact contact) {
-        // TODO When account is not set on device - app crashes on adding new contact
-//        if (!isAccountSelected()){
-//            try {
-//                throw new NoAccountIsSet();
-//            } catch (NoAccountIsSet noAccountIsSet) {
-//                noAccountIsSet.printStackTrace();
-//            }
-//        }
+        // Check if account spinner shows account => account is set on device.
+        // When account is not set on device - app crashes on adding new contact
+        if (!isAccountSelected()) {
+            try {
+                throw new NoAccountIsSetException();
+            } catch (NoAccountIsSetException noAccountIsSet) {
+                noAccountIsSet.printStackTrace();
+            }
+        }
 
-        // Fill Name Phone Email
-        contactNameEdit.sendKeys(contact.getName());
-        contactPhoneEdit.sendKeys(contact.getPhone());
-        contactEmailEdit.sendKeys(contact.getEmail());
+        // Fill Email Name Phone
+        appiumDriver.hideKeyboard();
+        emailEdit.sendKeys(contact.getEmail());
+        nameEdit.sendKeys(contact.getName());
+        phoneEdit.sendKeys(contact.getPhone());
 
         // Select Phone And Email Type
-        contactPhoneType.click();
+        phoneType.click();
         selectContactType(contact.getPhoneType());
 
-        contactEmailType.click();
+        emailType.click();
         selectContactType(contact.getEmailType());
 
         // Submit
         appiumDriver.hideKeyboard();
-        contactSaveButton.click();
+        saveButton.click();
     }
 
     /**
@@ -80,23 +86,29 @@ public class AddContactPage extends BasePage {
         addContact(generateRandomContact());
     }
 
-    private boolean isAccountSelected(){
-        return !accountSpinner.getText().isEmpty();
+    // Check if AccountSpinner shows some Account
+    private boolean isAccountSelected() {
+        return !accountSpinnerText.getText().isEmpty();
     }
 
-    // Select type of contact in spinner
+    /**
+     * Select type of contact in spinner
+     * Only EN and RU locales supported yet
+     */
     private void selectContactType(ContactTypes contactType) {
         boolean typeIsPresent = false;
-        String select = contactType.type;
+        String selectEN = contactType.typeEN;
+        String selectRU = contactType.typeRU;
         for (WebElement element : typeDialog) {
-            if (element.getText().equals(select)) {
+            String elementText = element.getText();
+            if (elementText.equals(selectEN) || elementText.equals(selectRU)) {
                 element.click();
                 typeIsPresent = true;
                 break;
             }
         }
         if (!typeIsPresent) {
-            throw new IllegalArgumentException(contactType.type);
+            throw new IllegalArgumentException("Possible locale issue");
         }
     }
 }
