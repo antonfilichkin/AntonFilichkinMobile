@@ -1,4 +1,4 @@
-package enums.site.org.iana;
+package enums.site;
 
 public enum URLs {
     MAIN_PAGE("https://www.iana.org/");

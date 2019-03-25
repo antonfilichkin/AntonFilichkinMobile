@@ -9,7 +9,7 @@ import pageObjects.site.org.iana.MainPage;
 public class SimpleWebTest extends TestHooks {
     private static MainPage mainPage;
 
-    @BeforeMethod(description = "Open test pageObjects.site")
+    @BeforeMethod(description = "Open test site")
     public void openSUT() {
         mainPage = new MainPage();
         mainPage.checkSiteIsAvailable();

@@ -1,23 +1,41 @@
 package scenarios.nativeTests;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
+import pageObjects.app.com.example.android.contactmanager.AddContactPage;
+import pageObjects.app.com.example.android.contactmanager.MainPage;
 import setup.TestHooks;
+import testData.Contact;
 
-import static setup.Driver.driver;
+import static utils.ContactGenerator.generateRandomContact;
 
 @Test(groups = "native")
 public class SimpleNativeTest extends TestHooks {
+    private static MainPage mainPage;
+    private static AddContactPage addContactPage;
 
-    @Test(description = "Just click on button 'Add contact'")
+    @Test(description = "Test: It is possible to add new contact")
     public void simplestTest() {
-        String app_package_name = "com.example.android.contactmanager:id/";
-        By add_btn = By.id(app_package_name + "addContactButton");
-        driver().findElement(add_btn).click();
-        // The result of clicking doesn't checked.
-        System.out.println("Simplest Appium test done");
+        mainPage = new MainPage();
+        addContactPage = new AddContactPage();
+
+        // Open Add Contact page
+        mainPage.openAddContactPage();
+        addContactPage.checkTitle();
+
+        // Generating random contact
+        Contact contact = generateRandomContact();
+
+        // Check list contains expected contact
+        addContactPage.addContact(contact);
+        mainPage.checkListContains(contact);
     }
 }
+
+//        String app_package_name = "com.example.android.contactmanager:id/";
+//        By add_btn = By.id(app_package_name + "addContactButton");
+//        driver().findElement(add_btn).click();
+//        // The result of clicking doesn't checked.
+//        System.out.println("Simplest Appium test done");
 //
 //
 //

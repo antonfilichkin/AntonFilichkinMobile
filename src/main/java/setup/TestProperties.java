@@ -1,7 +1,6 @@
 package setup;
 
 import enums.PropertiesKeys;
-import enums.PropertyFiles;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,16 +14,8 @@ class TestProperties {
         this.propertyFileName = propertyFile;
     }
 
-//    TestProperties(PropertyFiles propertyFile) {
-//        this.propertyFileName = propertyFile.fileName;
-//    }
-
-    String getProperty(PropertiesKeys key) {
-        return getProperty(key.property);
-    }
-
-    // backward comparability TODO refactor method
-    private String getProperty(String key) {
+    String getProperty(PropertiesKeys pKey) {
+        String key = pKey.property;
         if (!properties.containsKey(key)) {
             properties = getProperties();
         }

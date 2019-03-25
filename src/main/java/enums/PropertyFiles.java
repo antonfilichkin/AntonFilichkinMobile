@@ -3,7 +3,6 @@ package enums;
 /**
  * Properties setup moved to testNG.xml
  */
-
 @Deprecated
 public enum PropertyFiles {
     NATIVE_PROPERTY_FILE("nativetest.properties"),

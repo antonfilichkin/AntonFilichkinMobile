@@ -9,8 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static enums.site.org.iana.ExpectedValues.*;
-import static enums.site.org.iana.URLs.MAIN_PAGE;
+import static enums.site.ExpectedValues.*;
+import static enums.site.URLs.MAIN_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static setup.Driver.driver;
@@ -36,7 +36,7 @@ public class MainPage {
 
     /**
      * Selenium can't pass http response code by itself - this solution is to check the availability
-     * of the pageObjects.site from test running instance (!!! it still may not be available from device !!!)
+     * of the site from test running instance (!!! it still may not be available from device !!!)
      */
     public void checkSiteIsAvailable() {
         assertThat(getHttpResponseCode(url), is(HttpStatus.SC_OK));
@@ -50,7 +50,7 @@ public class MainPage {
     }
 
     /**
-     * Check pageObjects.site title
+     * Check site title
      */
     public void checkTitle() {
         wait.until(ExpectedConditions.urlToBe(url));

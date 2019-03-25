@@ -24,3 +24,4 @@ Emulator
 17 sec
 17 sec
 
++Lang

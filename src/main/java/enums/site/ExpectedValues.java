@@ -1,4 +1,4 @@
-package enums.site.org.iana;
+package enums.site;
 
 public enum ExpectedValues {
     //Main Page
