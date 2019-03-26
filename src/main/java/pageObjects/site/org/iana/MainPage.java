@@ -31,7 +31,6 @@ public class MainPage {
     private String url = MAIN_PAGE.url;
 
     @FindBy(css = "#intro")
-    @AndroidFindBy(id = "intro")
     private WebElement intro;
 
     /**
