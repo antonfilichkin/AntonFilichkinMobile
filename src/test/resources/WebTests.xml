@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Mobile tests" parallel="methods" thread-count="1">
-    <parameter name="propertyFile" value="webtest.properties"/>
+    <parameter name="propertyFile" value="properties/local/webtest.properties"/>
     <test name="Web Tests">
         <groups>
             <run>

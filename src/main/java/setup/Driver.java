@@ -65,7 +65,6 @@ public class Driver {
                 browserName = CHROME;
                 break;
             case IOS:
-                // TODO set Capabilities for iOS device here.
                 browserName = SAFARI;
                 break;
             default:
@@ -77,6 +76,9 @@ public class Driver {
         if (aut != null && sut == null) {
             // Native
             File app = new File(aut);
+            capabilities.setCapability("appPackage", "com.example.android.contactmanager");
+            capabilities.setCapability("appActivity", ".ContactManager");
+//            capabilities.setCapability("autoLaunch", true);
             capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
         } else if (sut != null && aut == null) {
             // Web

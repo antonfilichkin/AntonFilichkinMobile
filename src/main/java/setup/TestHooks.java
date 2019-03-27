@@ -7,9 +7,18 @@ import org.testng.annotations.Test;
 
 @Test(groups = "setup")
 public class TestHooks {
-    @BeforeClass(description = "Prepare driver to run test(s)")
+    @BeforeClass(description = "Prepare driver to run test(s) on local Appium Server")
     @Parameters({"propertyFile"})
-    public static void setUp(String propertyFile) throws Exception {
+    public static void setUpLocal(String propertyFile) throws Exception {
+        Driver.setPropertyFile(propertyFile);
+        Driver.prepareDriver();
+        System.out.println("Driver prepared");
+    }
+
+    @BeforeClass(description = "Prepare driver to run test(s) on EPAM Mobile Farm")
+    @Parameters({"propertyFile"})
+    public static void setUpMobileFarm(String propertyFile) throws Exception {
+//        MobileFarmConnection.
         Driver.setPropertyFile(propertyFile);
         Driver.prepareDriver();
         System.out.println("Driver prepared");
