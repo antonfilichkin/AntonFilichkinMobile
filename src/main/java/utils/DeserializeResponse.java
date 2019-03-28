@@ -1,19 +1,44 @@
 package utils;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import io.restassured.response.Response;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class DeserializeResponse {
-    //TODO implement deserialization to List using generics
-//    public static List<Card> cardsDeserializeResponseToList(Response response) {
-//        return new Gson().fromJson(response.asString().trim(), new TypeToken<List<Card>>() {
-//        }.getType());
-//    }
-
-    public static <B> B deserializeResponse(Response response, Class<B> beanClass) {
+    // Deserialize json response to object
+    public static <T> T deserializeResponse(Response response, Class<T> beanClass) {
         return new Gson().fromJson(response.asString().trim(), beanClass);
+    }
+
+    // Deserialize json response to list of objects
+    public static <T> List<T> deserializeResponseList(Response response, Class<T> beanClass) {
+        return new Gson().fromJson(response.asString().trim(), new ListOfJson<>(beanClass));
+    }
+
+    // Wrapper class for list so the wrapper can store the exactly type of list.
+    private static class ListOfJson<T> implements ParameterizedType {
+        private Class<?> wrapped;
+
+        private ListOfJson(Class<T> wrapper) {
+            this.wrapped = wrapper;
+        }
+
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[]{wrapped};
+        }
+
+        @Override
+        public Type getRawType() {
+            return List.class;
+        }
+
+        @Override
+        public Type getOwnerType() {
+            return null;
+        }
     }
 }

@@ -1,6 +1,5 @@
 package setup;
 
-import exceptions.PropertiesNotSetException;
 import exceptions.UnknownPlatformException;
 import exceptions.UnknownTypeException;
 import io.appium.java_client.AppiumDriver;
@@ -9,6 +8,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -24,47 +24,40 @@ public class Driver {
     private static AppiumDriver driver;
     private static WebDriverWait wait;
 
-    // Private constructor for singleton
-    private Driver() {
-    }
-
-    /**
-     * Property file setter
-     *
-     * @param file - file containing test properties
-     */
-    static void setPropertyFile(String file) {
-        propertyFile = file;
-    }
+    private static String aut;
+    private static String sut;
+    private static String platform;
+//    private static String device;
+    private static String udid;
+    private static String driver_url;
+    private static String wait_before_close;
 
     /**
      * Initialize driver with test properties
+     *
+     * @param propertyFile - file containing test properties
+     *
+     * @throws UnknownPlatformException - on unset platform property
+     * @throws UnknownTypeException - on unset type (app, web, hybrid) of test
+     * @throws MalformedURLException - on incorrect Appium driver URL
      */
-    static void prepareDriver() throws Exception {
-        //Check if propertyFile has been set
-        if (propertyFile == null) {
-            throw new PropertiesNotSetException();
-        }
+    static void prepareDriver(String propertyFile) throws Exception {
+        // Set Properties from file
+        setProperties(propertyFile);
 
-        //Reading properties
-        TestProperties testProperties = new TestProperties(propertyFile);
-        String aut = testProperties.getProperty(APP_UNDER_TEST);
-        String sut = testProperties.getProperty(SITE_UNDER_TEST);
-        String platform = testProperties.getProperty(TEST_PLATFORM);
-        String device = testProperties.getProperty(DEVICE_ID);
-        String driver_url = testProperties.getProperty(DRIVER_URL);
-
-        //Test capabilities
+        // Test capabilities
         DesiredCapabilities capabilities = new DesiredCapabilities();
         String browserName;
 
         // Setup test platform: Android or iOS, set Browser.
         switch (platform) {
             case ANDROID:
-                capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, device);
+//                capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, device);
+                capabilities.setCapability(MobileCapabilityType.UDID, udid);
                 browserName = CHROME;
                 break;
             case IOS:
+                capabilities.setCapability(MobileCapabilityType.UDID, udid);
                 browserName = SAFARI;
                 break;
             default:
@@ -105,7 +98,7 @@ public class Driver {
     public static AppiumDriver driver() {
         if (driver == null) {
             try {
-                prepareDriver();
+                prepareDriver(propertyFile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -115,11 +108,35 @@ public class Driver {
 
     // Close driver
     static void quit() {
+        // Wait before closing driver if requested in property file
+        if (wait_before_close != null) {
+            try {
+                Thread.sleep(Integer.parseInt(wait_before_close) * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         driver.quit();
     }
 
     // Get wait object
     public static WebDriverWait driverWait() {
         return wait;
+    }
+
+    // Private constructor for singleton
+    private Driver() {
+    }
+
+    //Reading properties
+    private static void setProperties(String propertyFile) {
+        TestProperties testProperties = new TestProperties(propertyFile);
+        aut = testProperties.getProperty(APP_UNDER_TEST);
+        sut = testProperties.getProperty(SITE_UNDER_TEST);
+        platform = testProperties.getProperty(TEST_PLATFORM);
+        // device = testProperties.getProperty(DEVICE_ID);
+        udid = testProperties.getProperty(DEVICE_UDID);
+        driver_url = testProperties.getProperty(DRIVER_URL);
+        wait_before_close = testProperties.getProperty(WAIT_CLOSE);
     }
 }

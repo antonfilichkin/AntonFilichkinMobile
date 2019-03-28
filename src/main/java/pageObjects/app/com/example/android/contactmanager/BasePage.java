@@ -12,10 +12,10 @@ import static setup.Driver.driver;
 import static setup.Driver.driverWait;
 
 abstract class BasePage {
-    AppiumDriver appiumDriver;
-    private WebDriverWait wait; //Do we really need this?
+    final AppiumDriver appiumDriver;
+    private final WebDriverWait wait; //Do we really need this?
 
-    private String expectedTitle;
+    private final String expectedTitle;
 
     BasePage(String expectedTitle) {
         this.appiumDriver = driver();

@@ -1,0 +1,2 @@
+For Web test - run WebTests.xml TestNg config
+For Native test - run NativeTests.xml TestNg config

@@ -1,0 +1,67 @@
+<<<<<<< Updated upstream
+Q5 - Modify existing tests to run on a real device. What should be changed?
+A - You should change "deviceName" capability from emulator name to real device name.
+ capabilities.setCapability("deviceName", "emulator-5554") =>
+ capabilities.setCapability("deviceName", "13710040515") in my case.
+
+Q6 - Connect a real device to Appium (describe required actions) and run tests.
+    Are there any difference with run on emulator?
+A - You need to find at least one working device with acceptable Android version in the shoebox with old phones.
+    Then find a charger. Remember that this device has some charging problems.
+    Resolder charging port. Enable Developer options. Connect device.
+    Find that real device is at least 4 secs slower when running simplest Contact Manager tests
+    21-41s vs 17-21s on virtual one, and often crushes cause of corrupted memory issues.
+    (This time you remember that it was the real reason it went to a shoebox).
+    Chrome fails to start on Android 4.4.4 Tegra device ((( It crushes on each call (((
+    All Google services periodically crushes. It's consequence of custom ROM installed. (((
+
+    If I set "browserName" capability to "Browser" - Appium fails to communicate with real device,
+    no matter what driver version I use for starting appium server.
+    And after a few hours - I've ended with device in bootloop.
+
+    UPD: Managed to return device back to life:
+    Testing Contact Manager app on virtual vs real device - uncovers locale issues, when using selections
+    based on element's text.
+    Final test runs with app much faster on real device than on emulated one.
+
+    Still no luck with site tests on real device:
+    Passing capability "chromedriverExecutable" did not help.
+    Chrome is started. But appium returns error.
+
+    Error "Chrome version must be >= 30.0.1573.2"
+        using chromedriver 2.7 (Supports Chrome v30-33)
+
+    Error "Unable to automate Chrome version because it is too old for this version of Chromedriver.
+    Chrome version on the device: Chrome/33.0.0.0
+        using chromedriver 2.8 - 2.10 (Supports Chrome v33-36) and higher versions.
+
+    I'll try to get newer device - or try with mobile farm.
+=======
+Q - Change settings to run web test on a certain iOS device in mobile cloud.
+    Run test with your changes. Did test pass?
+A - Yes.
+
+Q - Change settings to run native test on a certain/random Android device in mobile cloud.
+    Add support of appPackage and appActivity parameters for Android devices
+    (reading from a .properties file and then setting in the DesiredCapabilities).
+    Locally installed Appium DT has no need in these parameters, but for Appium server of EPAM mobile cloud it’s mandatory.
+    Run test with your changes. Did test pass?
+A - No
+
+Q - Try to use autoLaunch capability with app as before instead of appPackage and appActivity. Does this approach work?
+A - No, btw it is true by default (by Appium documentation)
+
+Q - What’s wrong with our code? How to fix/improve it? Implement your suggestions.
+A - As written on EPAM Mobile Cloud site:
+    "Because your Appium tests and Mobile Cloud are distributed, Desired Capability "app" is ignored at this moment."
+     and "before running Appium test, please install application under test using REST API and then ..."
+     Our code does not handle installation of app via EPAM Mobile Cloud REST API.
+     To fix it, we need to study info on REAST API for integration with EPAM Mobile Cloud and
+     implement installation of app via REST API.
+     Or wait for "In future releases we are going to support "app" Desired Capability". )))
+
+
+ljg 2
+As by - "Once driver.quit() were called, session will be terminated and device released"
+ur.. don't call driver.quit()? Added ondemad properties parameter to wait before driver close
+>>>>>>> Stashed changes

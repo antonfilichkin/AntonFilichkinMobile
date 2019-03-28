@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @SuppressWarnings("unused")
-public class ADC {
+public class Device {
 
     private DesiredCapabilities desiredCapabilities;
 

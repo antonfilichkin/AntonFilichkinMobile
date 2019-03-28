@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @SuppressWarnings("unused")
-public class DesiredCapabilities {
+public
+class DesiredCapabilities {
 
     private String browserName;
     private String deviceName;

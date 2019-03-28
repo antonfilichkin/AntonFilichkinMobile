@@ -1,17 +1,17 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Mobile tests" parallel="methods" thread-count="1">
-    <parameter name="propertyFile" value="webtest_Farm_Android.properties"/>
-    <test name="Web Tests">
+    <parameter name="propertyFile" value="properties/remote/android/nativetest.properties"/>
+    <test name="NativeTests">
         <groups>
             <run>
                 <include name="setup"/>
-                <include name="web"/>
+                <include name="native"/>
             </run>
         </groups>
 
         <classes>
-            <class name="scenarios.webTests.SimpleWebTest"/>
+            <class name="scenarios.nativeTests.SimpleNativeTest"/>
         </classes>
     </test>
 </suite>

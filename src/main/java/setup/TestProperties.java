@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 class TestProperties {
-    private String propertyFileName;
+    private final String propertyFileName;
     private Properties properties = new Properties();
 
     TestProperties(String propertyFile) {

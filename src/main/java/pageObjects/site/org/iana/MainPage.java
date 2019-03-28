@@ -1,7 +1,6 @@
 package pageObjects.site.org.iana;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.apache.http.HttpStatus;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,8 +18,8 @@ import static setup.Driver.driverWait;
 import static utils.HTTPResponceCode.getHttpResponseCode;
 
 public class MainPage {
-    private AppiumDriver appiumDriver;
-    private WebDriverWait wait;
+    private final AppiumDriver appiumDriver;
+    private final WebDriverWait wait;
 
     public MainPage() {
         this.appiumDriver = driver();
@@ -28,7 +27,7 @@ public class MainPage {
         PageFactory.initElements(appiumDriver, this);
     }
 
-    private String url = MAIN_PAGE.url;
+    private final String url = MAIN_PAGE.url;
 
     @FindBy(css = "#intro")
     private WebElement intro;
