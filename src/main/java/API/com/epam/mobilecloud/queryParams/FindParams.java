@@ -1,4 +1,4 @@
-package farmAPIs.com.epam.mobilecloud.queryParams;
+package API.com.epam.mobilecloud.queryParams;
 
 public enum FindParams {
     TYPE("type"),

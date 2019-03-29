@@ -30,6 +30,8 @@ public class Driver {
     // Common
     private static String aut;
     private static String sut;
+    private static String autPackage;
+    private static String autActivivty;
 
     // Driver
     private static String url;
@@ -65,8 +67,12 @@ public class Driver {
         // Setup test platform: Android or iOS, set Browser.
         switch (platform) {
             case ANDROID:
-//                capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, device);
-                capabilities.setCapability(MobileCapabilityType.UDID, udid);
+                //use device name if udid is not passed
+                if ((udid != null)) {
+                    capabilities.setCapability(MobileCapabilityType.UDID, udid);
+                } else {
+                    capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, name);
+                }
                 browserName = CHROME;
                 break;
             case IOS:
@@ -78,15 +84,18 @@ public class Driver {
         }
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, platform);
 
-
         // Setup type of application: mobile, web (or hybrid)
         if (aut != null && sut == null) {
             // Native
             File app = new File(aut);
-            capabilities.setCapability("appPackage", "com.example.android.contactmanager");
-            capabilities.setCapability("appActivity", ".ContactManager");
-//            capabilities.setCapability("autoLaunch", true);
-//            capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
+
+            // set AppPackage and AppActivity capabilities required by Mobile Farm
+            if (autPackage != null) capabilities.setCapability(APP_PACKAGE.property, autPackage);
+            if (autActivivty != null) capabilities.setCapability(APP_ACTIVITY.property, autActivivty);
+//            capabilities.setCapability("autoLaunch", true) - true by default;
+
+            // default behavior (ignored by Mobile Farm)
+            capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
         } else if (sut != null && aut == null) {
             // Web
             capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, browserName);
@@ -96,7 +105,6 @@ public class Driver {
 
         // Init driver for local Appium server with set capabilities
         if (driver == null) {
-
             driver = new AppiumDriver(buildUrl(), capabilities);
         }
 
@@ -141,6 +149,8 @@ public class Driver {
         // Common
         aut = testProperties.getProperty(APP_UNDER_TEST);
         sut = testProperties.getProperty(SITE_UNDER_TEST);
+        autPackage = testProperties.getProperty(APP_PACKAGE);
+        autActivivty = testProperties.getProperty(APP_ACTIVITY);
 
         // Driver
         url = testProperties.getProperty(DRIVER_URL);
@@ -174,7 +184,7 @@ public class Driver {
                 .setHost(bUrl)
                 .setPort(bPort)
                 .setPath(bPath)
-                .setPort(Integer.parseInt(port));
+                .setPort(bPort);
 
         // Do not add username:password - if either is not provided
         if (user != null && token != null) {

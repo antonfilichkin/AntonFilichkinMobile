@@ -1,12 +1,12 @@
-package farmAPIs.com.epam.mobilecloud;
+package API.com.epam.mobilecloud;
 
+import API.com.epam.mobilecloud.queryParams.FindParams;
+import API.com.epam.mobilecloud.queryParams.Methods;
+import API.com.epam.mobilecloud.queryParams.TakeParams;
 import beans.DesiredCapabilities;
 import beans.Device;
 import com.google.gson.Gson;
 import enums.Platform;
-import farmAPIs.com.epam.mobilecloud.queryParams.FindParams;
-import farmAPIs.com.epam.mobilecloud.queryParams.Methods;
-import farmAPIs.com.epam.mobilecloud.queryParams.TakeParams;
 import org.apache.http.*;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -15,7 +15,9 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -28,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static farmAPIs.com.epam.mobilecloud.queryParams.Methods.*;
 import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,7 +62,6 @@ public class API {
             this.resource = resource;
         }
 
-        //Default methods for API
         /**
          * Find available device
          * Search for fully operational, available device
@@ -71,7 +71,7 @@ public class API {
          */
         public List<Device> getAvailableDevices(Platform p) throws IOException, URISyntaxException {
             setPath(format("/%s/%s", DEVICE, p.platform));
-            buildRequest(GET);
+            buildRequest(Methods.GET);
             executeRequest();
             assertResponseSC(HttpStatus.SC_OK);
 
@@ -92,7 +92,7 @@ public class API {
          */
         public void takeDevice(String udid) throws URISyntaxException, IOException {
             setPath(format("/%s/%s", DEVICE, udid));
-            buildRequest(POST);
+            buildRequest(Methods.POST);
             executeRequest();
             assertResponseSC(HttpStatus.SC_OK);
         }
@@ -107,7 +107,7 @@ public class API {
         public String takeDevice(Device device) throws URISyntaxException, IOException {
             setPath(format("/%s", DEVICE));
             desiredCapabilities(device);
-            buildRequest(POST);
+            buildRequest(Methods.POST);
             executeRequest();
             assertResponseSC(HttpStatus.SC_OK);
 
@@ -124,7 +124,7 @@ public class API {
         public void stopUsingDevice(String udid) throws IOException {
             setPath(format("/%s/%s", DEVICE, udid));
             try {
-                buildRequest(DELETE);
+                buildRequest(Methods.DELETE);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -144,7 +144,7 @@ public class API {
             File file = new File(pathToApp);
             addBinary(file);
             setPath(format("/%s/%s", APP_INSTALL, udid));
-            buildRequest(POST);
+            buildRequest(Methods.POST);
             executeRequest();
             assertResponseSC(HttpStatus.SC_CREATED);
         }

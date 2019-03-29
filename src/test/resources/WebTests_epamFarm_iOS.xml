@@ -2,7 +2,7 @@
 
 <suite name="Mobile tests" parallel="methods" thread-count="1">
     <parameter name="propertyFile" value="properties/remote/iOS/webtest.properties"/>
-    <test name="Web Tests">
+    <test name="Web Tests - Farm">
         <groups>
             <run>
                 <include name="setup"/>

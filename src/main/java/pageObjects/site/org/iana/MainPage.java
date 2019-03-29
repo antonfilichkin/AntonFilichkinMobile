@@ -8,6 +8,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import static enums.site.ExpectedValues.MAIN_PAGE_INTRO;
 import static enums.site.ExpectedValues.MAIN_PAGE_TITLE;
 import static enums.site.URLs.MAIN_PAGE;
@@ -15,7 +19,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static setup.Driver.driver;
 import static setup.Driver.driverWait;
-import static utils.HTTPResponceCode.getHttpResponseCode;
 
 public class MainPage {
     private final AppiumDriver appiumDriver;
@@ -36,8 +39,13 @@ public class MainPage {
      * Selenium can't pass http response code by itself - this solution is to check the availability
      * of the site from test running instance (!!! it still may not be available from device !!!)
      */
-    public void checkSiteIsAvailable() {
-        assertThat(getHttpResponseCode(url), is(HttpStatus.SC_OK));
+    public void checkSiteIsAvailable() throws IOException {
+        URL siteURL = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+        connection.connect();
+        int responseCode = connection.getResponseCode();
+
+        assertThat(responseCode, is(HttpStatus.SC_OK));
     }
 
     /**

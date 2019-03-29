@@ -1,6 +1,6 @@
 package setup;
 
-import farmAPIs.com.epam.mobilecloud.API;
+import API.com.epam.mobilecloud.API;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -32,9 +32,8 @@ public class TestHooks {
         System.out.println("Driver closed");
     }
 
-
     /**
-     * Install app on desired device, using api
+     * Install app on desired device, using Mobile Farm api
      */
     private static void installAppOnDesiredDevice(String propertyFile) throws IOException, URISyntaxException {
         TestProperties testProperties = new TestProperties(propertyFile);
