@@ -5,9 +5,19 @@ import io.restassured.response.Response;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class DeserializeResponse {
+    public static <T> T deserializeResponse(String response, Class<T> beanClass) {
+        return new Gson().fromJson(response, beanClass);
+    }
+
+    public static <T> List<T> deserializeResponseList(String response, Class<T> beanClass) {
+        return new Gson().fromJson(response, new ListOfJson<>(beanClass));
+    }
+
+    // REST ASSURED
     // Deserialize json response to object
     public static <T> T deserializeResponse(Response response, Class<T> beanClass) {
         return new Gson().fromJson(response.asString().trim(), beanClass);

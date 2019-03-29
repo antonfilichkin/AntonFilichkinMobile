@@ -14,7 +14,7 @@ class TestProperties {
         this.propertyFileName = propertyFile;
     }
 
-    String getProperty(PropertiesKeys pKey) {
+    String getProperty(PropertiesKeys pKey) throws IOException {
         String key = pKey.property;
         if (!properties.containsKey(key)) {
             properties = getProperties();
@@ -23,11 +23,9 @@ class TestProperties {
         return getProperties().getProperty(key, null);
     }
 
-    private Properties getProperties() {
+    private Properties getProperties() throws IOException {
         try (InputStream in = TestProperties.class.getResourceAsStream("/" + propertyFileName)) {
             properties.load(in);
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
         return properties;
     }

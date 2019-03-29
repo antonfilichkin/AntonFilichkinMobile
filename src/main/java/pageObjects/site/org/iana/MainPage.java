@@ -21,7 +21,7 @@ public class MainPage {
     private final AppiumDriver appiumDriver;
     private final WebDriverWait wait;
 
-    public MainPage() {
+    public MainPage() throws Exception {
         this.appiumDriver = driver();
         this.wait = driverWait();
         PageFactory.initElements(appiumDriver, this);

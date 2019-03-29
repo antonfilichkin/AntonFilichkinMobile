@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 
 public class MainPage extends BasePage {
-    public MainPage() {
+    public MainPage() throws Exception {
         super(CONTACT_MANAGER.name);
     }
 

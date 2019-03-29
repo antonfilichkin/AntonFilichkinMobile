@@ -2,10 +2,10 @@
 
 <suite name="Mobile tests" parallel="methods" thread-count="1">
     <parameter name="propertyFile" value="properties/remote/android/nativetest.properties"/>
-    <test name="NativeTests">
+    <test name="NativeTests - Farm">
         <groups>
             <run>
-                <include name="setup"/>
+                <include name="setup_send_app"/>
                 <include name="native"/>
             </run>
         </groups>

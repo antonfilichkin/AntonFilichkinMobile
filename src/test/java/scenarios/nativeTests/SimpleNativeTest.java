@@ -15,7 +15,7 @@ public class SimpleNativeTest extends TestHooks {
 
     // Contact remains on device! It's impossible to remove created Contact by means of app. (((
     @Test(description = "Test: It is possible to add new contact")
-    public void testAddContact() {
+    public void testAddContact() throws Exception {
         mainPage = new MainPage();
         addContactPage = new AddContactPage();
 

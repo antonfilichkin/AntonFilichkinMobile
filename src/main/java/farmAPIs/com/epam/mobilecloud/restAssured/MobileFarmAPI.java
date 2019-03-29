@@ -3,29 +3,22 @@ package farmAPIs.com.epam.mobilecloud.restAssured;
 import beans.DesiredCapabilities;
 import beans.Device;
 import com.google.gson.Gson;
-import enums.farmAPIs.QueryParams;
+import farmAPIs.com.epam.mobilecloud.queryParams.TakeParams;
 import exceptions.UnknownPlatformException;
 import io.restassured.RestAssured;
-import io.restassured.authentication.OAuth2Scheme;
-import io.restassured.authentication.OAuthScheme;
-import io.restassured.authentication.PreemptiveOAuth2HeaderScheme;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static enums.farmAPIs.Paths.*;
+import static farmAPIs.com.epam.mobilecloud.restAssured.Paths.*;
 import static farmAPIs.com.epam.mobilecloud.restAssured.RequestSpecifications.request;
 import static farmAPIs.com.epam.mobilecloud.restAssured.RequestSpecifications.sendApp;
 import static farmAPIs.com.epam.mobilecloud.restAssured.ResponseSpecifications.successResponse;
 import static io.appium.java_client.remote.MobilePlatform.ANDROID;
 import static io.appium.java_client.remote.MobilePlatform.IOS;
-import static io.restassured.config.EncoderConfig.encoderConfig;
-import static io.restassured.http.ContentType.BINARY;
 import static utils.DeserializeResponse.deserializeResponse;
 import static utils.DeserializeResponse.deserializeResponseList;
 
@@ -46,12 +39,12 @@ public class MobileFarmAPI {
             this.resource = resource;
         }
 
-        public MobileFarmAPI.QueryBuilder addParam(QueryParams param, String value) {
+        public MobileFarmAPI.QueryBuilder addParam(TakeParams param, String value) {
             this.resource.params.put(param.queryParam, value);
             return this;
         }
 
-        public MobileFarmAPI.QueryBuilder addParam(QueryParams param, int value) {
+        public MobileFarmAPI.QueryBuilder addParam(TakeParams param, int value) {
             this.resource.params.put(param.queryParam, String.valueOf(value));
             return this;
         }
@@ -123,11 +116,11 @@ public class MobileFarmAPI {
          * @param platform - Android or iOS
          * @return udid of taken device
          */
-        public String takeDeviceByCapabilities(String platform, DesiredCapabilities capabilities) throws UnknownPlatformException {
+        public String takeDeviceByCapabilities(String platform, Device device) throws UnknownPlatformException {
             if (!platform.equals(ANDROID) && !platform.equals(IOS)) {
                 throw new UnknownPlatformException();
             }
-            String params = new Gson().toJson(capabilities);
+            String params = new Gson().toJson(device);
 
             Response response = RestAssured
                     .given(request(token))

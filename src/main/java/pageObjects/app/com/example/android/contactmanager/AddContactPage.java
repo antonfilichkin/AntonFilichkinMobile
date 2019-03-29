@@ -13,7 +13,7 @@ import static enums.app.PageNames.ADD_CONTACT;
 import static utils.ContactGenerator.generateRandomContact;
 
 public class AddContactPage extends BasePage {
-    public AddContactPage() {
+    public AddContactPage() throws Exception {
         super(ADD_CONTACT.name);
     }
 

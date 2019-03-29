@@ -10,7 +10,7 @@ public class SimpleWebTest extends TestHooks {
     private static MainPage mainPage;
 
     @BeforeMethod(description = "Open test site")
-    public void openSUT() {
+    public void openSUT() throws Exception {
         mainPage = new MainPage();
         mainPage.checkSiteIsAvailable();
         mainPage.openSite();

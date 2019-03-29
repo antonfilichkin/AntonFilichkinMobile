@@ -1,13 +1,17 @@
 package enums.setup;
 
 public enum PropertiesKeys {
-    DEVICE_ID("device"),
-    DEVICE_UDID("udid"),
     APP_UNDER_TEST("aut"),
     SITE_UNDER_TEST("sut"),
-    TEST_PLATFORM("platform"),
     DRIVER_URL("driver"),
-    WAIT_CLOSE("wait_close");
+    DRIVER_PORT("port"),
+    DRIVER_PATH("path"),
+    USER("user"),
+    TOKEN("token"),
+    TEST_PLATFORM("platform"),
+    DEVICE_NAME("device"),
+    DEVICE_UDID("udid"),
+    WAIT_CLOSE("wait");
 
     public final String property;
 

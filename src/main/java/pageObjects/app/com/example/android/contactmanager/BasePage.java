@@ -17,7 +17,7 @@ abstract class BasePage {
 
     private final String expectedTitle;
 
-    BasePage(String expectedTitle) {
+    BasePage(String expectedTitle) throws Exception {
         this.appiumDriver = driver();
         this.wait = driverWait();
         PageFactory.initElements(appiumDriver, this);
