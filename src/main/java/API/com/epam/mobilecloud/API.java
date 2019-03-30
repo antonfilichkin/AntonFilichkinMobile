@@ -1,5 +1,6 @@
 package API.com.epam.mobilecloud;
 
+import API.com.epam.mobilecloud.exceptions.ServerResponseNotAsExpected;
 import API.com.epam.mobilecloud.queryParams.FindParams;
 import API.com.epam.mobilecloud.queryParams.Methods;
 import API.com.epam.mobilecloud.queryParams.TakeParams;
@@ -30,9 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static API.com.epam.mobilecloud.queryParams.Methods.*;
 import static java.lang.String.format;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static utils.DeserializeResponse.deserializeResponse;
 import static utils.DeserializeResponse.deserializeResponseList;
 
@@ -48,8 +48,8 @@ public class API {
     private HttpRequestBase request;
     private HttpResponse response;
 
-    private List<Header> headers = new ArrayList<>();
-    private List<NameValuePair> params = new ArrayList<>();
+    private final List<Header> headers = new ArrayList<>();
+    private final List<NameValuePair> params = new ArrayList<>();
     private HttpEntity body;
 
     /**
@@ -69,11 +69,11 @@ public class API {
          * @param p - Platform (Android / iOS)
          * @return List of {@link beans.Device}
          */
-        public List<Device> getAvailableDevices(Platform p) throws IOException, URISyntaxException {
+        public List<Device> getAvailableDevices(Platform p) throws IOException, URISyntaxException, ServerResponseNotAsExpected {
             setPath(format("/%s/%s", DEVICE, p.platform));
-            buildRequest(Methods.GET);
+            buildRequest(GET);
             executeRequest();
-            assertResponseSC(HttpStatus.SC_OK);
+            expectStatusCode(HttpStatus.SC_OK);
 
             String jsonString = null;
             try {
@@ -90,11 +90,11 @@ public class API {
          *
          * @param udid - device unique id
          */
-        public void takeDevice(String udid) throws URISyntaxException, IOException {
+        public void takeDevice(String udid) throws URISyntaxException, IOException, ServerResponseNotAsExpected {
             setPath(format("/%s/%s", DEVICE, udid));
-            buildRequest(Methods.POST);
+            buildRequest(POST);
             executeRequest();
-            assertResponseSC(HttpStatus.SC_OK);
+            expectStatusCode(HttpStatus.SC_OK);
         }
 
         /**
@@ -104,12 +104,12 @@ public class API {
          * @param device Device, with DesiredCapabilities (OS Android | iOS) Mandatory
          * @return udid of assigned Device
          */
-        public String takeDevice(Device device) throws URISyntaxException, IOException {
+        public String takeDevice(Device device) throws URISyntaxException, IOException, ServerResponseNotAsExpected {
             setPath(format("/%s", DEVICE));
             desiredCapabilities(device);
-            buildRequest(Methods.POST);
+            buildRequest(POST);
             executeRequest();
-            assertResponseSC(HttpStatus.SC_OK);
+            expectStatusCode(HttpStatus.SC_OK);
 
             String jsonString = new BasicResponseHandler().handleResponse(this.resource.response);
             return deserializeResponse(jsonString, DesiredCapabilities.class).getUdid();
@@ -121,15 +121,15 @@ public class API {
          *
          * @param udid of Device to finish usage
          */
-        public void stopUsingDevice(String udid) throws IOException {
+        public void stopUsingDevice(String udid) throws IOException, ServerResponseNotAsExpected {
             setPath(format("/%s/%s", DEVICE, udid));
             try {
-                buildRequest(Methods.DELETE);
+                buildRequest(DELETE);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
             executeRequest();
-            assertResponseSC(HttpStatus.SC_OK);
+            expectStatusCode(HttpStatus.SC_OK);
         }
 
         /**
@@ -140,19 +140,19 @@ public class API {
          * @param udid      of Device to install app
          * @param pathToApp - path to app
          */
-        public void installApp(String udid, String pathToApp) throws URISyntaxException, IOException {
+        public void installApp(String udid, String pathToApp) throws URISyntaxException, IOException, ServerResponseNotAsExpected {
             File file = new File(pathToApp);
             addBinary(file);
             setPath(format("/%s/%s", APP_INSTALL, udid));
-            buildRequest(Methods.POST);
+            buildRequest(POST);
             executeRequest();
-            assertResponseSC(HttpStatus.SC_CREATED);
+            expectStatusCode(HttpStatus.SC_CREATED);
         }
 
         /**
          * API Query Builder for custom requests
          */
-        public API.QueryBuilder buildRequest(Methods method) throws URISyntaxException {
+        public QueryBuilder buildRequest(Methods method) throws URISyntaxException {
             URI uri = this.resource.uriBuilder.addParameters(this.resource.params).build();
             switch (method) {
                 case GET:
@@ -172,44 +172,48 @@ public class API {
             return this;
         }
 
-        public API.QueryBuilder executeRequest() throws IOException {
+        public QueryBuilder executeRequest() throws IOException {
             CloseableHttpClient httpClient = HttpClients.createMinimal();
             this.resource.response = httpClient.execute(this.resource.request);
             httpClient.close();
             return this;
         }
 
-        public API.QueryBuilder assertResponseSC(int statusCode) {
-            assertThat(this.resource.response.getStatusLine().getStatusCode(), is(statusCode));
+        public QueryBuilder expectStatusCode(int expectedSC) throws ServerResponseNotAsExpected {
+            int actualSC = this.resource.response.getStatusLine().getStatusCode();
+            if (actualSC != expectedSC) {
+                String serverAnswer = this.resource.response.getStatusLine().getReasonPhrase();
+                throw new ServerResponseNotAsExpected(expectedSC, actualSC, serverAnswer);
+            }
             return this;
         }
 
-        public API.QueryBuilder addParam(String paramName, String paramValue) {
+        public QueryBuilder addParam(String paramName, String paramValue) {
             this.resource.params.add(new BasicNameValuePair(paramName, paramValue));
             return this;
         }
 
-        public API.QueryBuilder addParam(FindParams paramName, String paramValue) {
+        public QueryBuilder addParam(FindParams paramName, String paramValue) {
             this.resource.params.add(new BasicNameValuePair(paramName.queryParam, paramValue));
             return this;
         }
 
-        public API.QueryBuilder addParam(TakeParams paramName, String paramValue) {
+        public QueryBuilder addParam(TakeParams paramName, String paramValue) {
             this.resource.params.add(new BasicNameValuePair(paramName.queryParam, paramValue));
             return this;
         }
 
-        public API.QueryBuilder addParam(BasicNameValuePair param) {
+        public QueryBuilder addParam(BasicNameValuePair param) {
             this.resource.params.add(param);
             return this;
         }
 
-        public API.QueryBuilder addParams(List<BasicNameValuePair> params) {
+        public QueryBuilder addParams(List<BasicNameValuePair> params) {
             this.resource.params.addAll(params);
             return this;
         }
 
-        public API.QueryBuilder addParams(Map<String, String> params) {
+        public QueryBuilder addParams(Map<String, String> params) {
             List<NameValuePair> list = params.entrySet().stream()
                     .map(e -> new BasicNameValuePair(e.getKey(), e.getValue()))
                     .collect(Collectors.toList());
@@ -217,40 +221,40 @@ public class API {
             return this;
         }
 
-        public API.QueryBuilder setAPIBaseURL(String url) {
+        public QueryBuilder setAPIBaseURL(String url) {
             this.resource.uriBuilder = new URIBuilder().setScheme("http").setHost(format("%s/%s", url, API_PATH));
             return this;
         }
 
-        public API.QueryBuilder setPath(String path) {
+        public QueryBuilder setPath(String path) {
             this.resource.uriBuilder.setPath(path);
             return this;
         }
 
-        public API.QueryBuilder desiredCapabilities(Device device) {
+        public QueryBuilder desiredCapabilities(Device device) {
             String json = new Gson().toJson(device);
             this.resource.body = new StringEntity(json, ContentType.APPLICATION_JSON);
             return this;
         }
 
-        public API.QueryBuilder addBinary(File file) {
+        public QueryBuilder addBinary(File file) {
             this.resource.body = MultipartEntityBuilder.create().addBinaryBody("file", file).build();
             return this;
         }
 
-        public API.QueryBuilder addHeader(String name, String value) {
+        public QueryBuilder addHeader(String name, String value) {
             this.resource.headers.add(new BasicHeader(name, value));
             return this;
         }
 
-        public API.QueryBuilder auth(String token) {
+        public QueryBuilder auth(String token) {
             this.resource.headers.add(new BasicHeader(AUTH, "Bearer " + token));
             return this;
         }
     }
 
-    public static API.QueryBuilder queryBuilder() {
+    public static QueryBuilder queryBuilder() {
         API api = new API();
-        return new API.QueryBuilder(api);
+        return new QueryBuilder(api);
     }
 }

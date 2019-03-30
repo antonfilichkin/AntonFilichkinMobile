@@ -17,7 +17,7 @@ public class DeserializeResponse {
 
     // Wrapper class for list so the wrapper can store the exactly type of list.
     private static class ListOfJson<T> implements ParameterizedType {
-        private Class<?> wrapped;
+        private final Class<?> wrapped;
 
         private ListOfJson(Class<T> wrapper) {
             this.wrapped = wrapper;

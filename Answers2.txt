@@ -1,13 +1,13 @@
 Q - Change settings to run web test on a certain iOS device in mobile cloud.
     Run test with your changes. Did test pass?
-A - Hardcode new url containing token to property. Successful run.
+A - Hardcode new url containing token to .property file. Successful run.
 
 Q - Change settings to run native test on a certain/random Android device in mobile cloud.
     Add support of appPackage and appActivity parameters for Android devices
     (reading from a .properties file and then setting in the DesiredCapabilities).
     Locally installed Appium DT has no need in these parameters, but for Appium server of EPAM mobile cloud it’s mandatory.
     Run test with your changes. Did test pass?
-A - No.
+A - Hardcoded new properties prior to adding them into property file. No luck in running tests.
 
 Q - Try to use autoLaunch capability with app as before instead of appPackage and appActivity. Does this approach work?
 A - No, btw it is true by default (by Appium documentation).
@@ -19,8 +19,16 @@ A - As written on EPAM Mobile Cloud site:
      Our code does not handle installation of app via EPAM Mobile Cloud REST API.
      To fix it, we need to study info on Mobile Farm REST API, and implement installation of app via Mobile Farm REST API.
      Or wait for "In future releases we are going to support "app" Desired Capability". )))
+     Write simple API query builder, for Device and Install app parts of API. For practice.
+     For this task we only need two requests: Take device in use by udid, and Install app.
+     And we need to handle device install before Driver Initialization - in case of testing native app on Mobile Farm.
 
+Q - сайт iana открывается, но закрывается очень быстро - причина в том как написан тест (sic!).
+    Доп.задание - объяснить почему и как сделать так, чтобы было видно дольше
+A - According to mobile cloud info "Once driver.quit() were called, session will be terminated and device released".
+    Added ondemand properties parameter to wait before driver close.
 
-ljg 2
-As by - "Once driver.quit() were called, session will be terminated and device released"
-ur.. don't call driver.quit()? Added ondemad properties parameter to wait before driver close.
+Q - секрет перезагрузки девайса после конца теста - в том, как написан TearDown.
+    Доп.задание№2 - понять почему и предложить решение как сделать так, чтобы девайс в перезагрузку не уходил.
+    TearDown is calling driver.quit() - if we don't want to lose connection to device - don't call driver.quit().
+    We can manage device taking/dropping via Mobile Farm API.

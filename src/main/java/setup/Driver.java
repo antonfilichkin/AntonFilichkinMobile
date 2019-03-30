@@ -31,7 +31,7 @@ public class Driver {
     private static String aut;
     private static String sut;
     private static String autPackage;
-    private static String autActivivty;
+    private static String autActivity;
 
     // Driver
     private static String url;
@@ -91,7 +91,7 @@ public class Driver {
 
             // set AppPackage and AppActivity capabilities required by Mobile Farm
             if (autPackage != null) capabilities.setCapability(APP_PACKAGE.property, autPackage);
-            if (autActivivty != null) capabilities.setCapability(APP_ACTIVITY.property, autActivivty);
+            if (autActivity != null) capabilities.setCapability(APP_ACTIVITY.property, autActivity);
 //            capabilities.setCapability("autoLaunch", true) - true by default;
 
             // default behavior (ignored by Mobile Farm)
@@ -150,7 +150,7 @@ public class Driver {
         aut = testProperties.getProperty(APP_UNDER_TEST);
         sut = testProperties.getProperty(SITE_UNDER_TEST);
         autPackage = testProperties.getProperty(APP_PACKAGE);
-        autActivivty = testProperties.getProperty(APP_ACTIVITY);
+        autActivity = testProperties.getProperty(APP_ACTIVITY);
 
         // Driver
         url = testProperties.getProperty(DRIVER_URL);
@@ -169,7 +169,7 @@ public class Driver {
     }
 
     /**
-     * Method for managing driver url - defaults to local appium driver if no properties set
+     * Method for managing driver url - defaults to local Appium driver settings if no properties set
      *
      * @return - driver url
      */

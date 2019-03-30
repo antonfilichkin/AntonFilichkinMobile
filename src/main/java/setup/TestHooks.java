@@ -1,6 +1,7 @@
 package setup;
 
 import API.com.epam.mobilecloud.API;
+import API.com.epam.mobilecloud.exceptions.ServerResponseNotAsExpected;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -35,7 +36,7 @@ public class TestHooks {
     /**
      * Install app on desired device, using Mobile Farm api
      */
-    private static void installAppOnDesiredDevice(String propertyFile) throws IOException, URISyntaxException {
+    private static void installAppOnDesiredDevice(String propertyFile) throws IOException, URISyntaxException, ServerResponseNotAsExpected {
         TestProperties testProperties = new TestProperties(propertyFile);
         String baseURI = testProperties.getProperty(DRIVER_URL);
         String token = testProperties.getProperty(TOKEN);
