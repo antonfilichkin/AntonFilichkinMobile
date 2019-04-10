@@ -92,7 +92,9 @@ public class AddContactPage extends BasePage {
     }
 
     public void checkFilledContact(Contact contact) {
-        appiumDriver.hideKeyboard();
+//        appiumDriver.hideKeyboard();
+//        appiumDriver.hideKeyboard();
+//        appiumDriver.hideKeyboard();
         assertThat(nameEdit.getText(), is(contact.getName()));
         assertThat(phoneEdit.getText(), is(contact.getPhone()));
         assertThat(phoneTypeText.getText(), containsStringIgnoringCase(contact.getPhoneType().toString()));
