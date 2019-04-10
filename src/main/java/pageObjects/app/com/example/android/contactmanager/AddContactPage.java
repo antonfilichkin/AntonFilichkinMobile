@@ -9,7 +9,9 @@ import testData.app.Contact;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static enums.app.PageNames.ADD_CONTACT;
+import static org.hamcrest.Matchers.is;
 import static utils.ContactGenerator.generateRandomContact;
 
 public class AddContactPage extends BasePage {
@@ -33,11 +35,19 @@ public class AddContactPage extends BasePage {
     @FindBy(id = "contactPhoneTypeSpinner")
     private WebElement phoneType;
 
+    @FindBys({@FindBy(id = "contactPhoneTypeSpinner"),
+            @FindBy(className = "TextView")})
+    private WebElement phoneTypeText;
+
     @FindBy(id = "contactEmailEditText")
     private WebElement emailEdit;
 
     @FindBy(id = "contactEmailTypeSpinner")
     private WebElement emailType;
+
+    @FindBys({@FindBy(id = "contactEmailTypeSpinner"),
+            @FindBy(className = "TextView")})
+    private WebElement emailTypeText;
 
     @FindBy(id = "contactSaveButton")
     private WebElement saveButton;
@@ -80,6 +90,16 @@ public class AddContactPage extends BasePage {
         appiumDriver.hideKeyboard();
     }
 
+    public void checkFilledContact(Contact contact) {
+        appiumDriver.hideKeyboard();
+        assertThat(nameEdit.getText(), is(contact.getName()));
+        assertThat(phoneEdit.getText(), is(contact.getPhone()));
+        assertThat(phoneTypeText.getText(), is(contact.getPhoneType()));
+        assertThat(emailEdit.getText(), is(contact.getEmail()));
+        assertThat(emailTypeText.getText(), is(contact.getEmailType()));
+
+        //contact.getPhoneType().ordinal();
+    }
     /**
      * Add random contact to Contacts List
      */
