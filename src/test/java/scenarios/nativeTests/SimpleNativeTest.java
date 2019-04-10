@@ -1,5 +1,6 @@
 package scenarios.nativeTests;
 
+import exceptions.NoAccountIsSetException;
 import org.testng.annotations.Test;
 import pageObjects.app.com.example.android.contactmanager.AddContactPage;
 import pageObjects.app.com.example.android.contactmanager.MainPage;
@@ -15,7 +16,7 @@ public class SimpleNativeTest extends TestHooks {
 
     // Contact remains on device! It's impossible to remove created Contact by means of app. (((
     @Test(description = "Test: It is possible to add new contact")
-    public void testAddContact() {
+    public void testAddContact() throws NoAccountIsSetException {
         mainPage = new MainPage();
         addContactPage = new AddContactPage();
 

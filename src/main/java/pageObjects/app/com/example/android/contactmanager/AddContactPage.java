@@ -20,9 +20,9 @@ public class AddContactPage extends BasePage {
     @FindBy(id = "accountSpinner")
     private WebElement accountSpinner;
 
-    @FindBys({@FindBy(id = "accountSpinner"),
-            @FindBy(id = "text1")})
-    private WebElement accountSpinnerText;
+//    @FindBys({@FindBy(id = "accountSpinner"),
+//            @FindBy(id = "text1")})
+//    private WebElement accountSpinnerText;
 
     @FindBy(id = "contactNameEditText")
     private WebElement nameEdit;
@@ -50,17 +50,20 @@ public class AddContactPage extends BasePage {
      *
      * @param contact - Contact to add
      */
-    public void addContact(Contact contact) {
+    public void addContact(Contact contact) throws NoAccountIsSetException {
         // Check if account spinner shows account => account is set on device.
         // When account is not set on device - app crashes on adding new contact
         if (!isAccountSelected()) {
-            try {
-                throw new NoAccountIsSetException();
-            } catch (NoAccountIsSetException noAccountIsSet) {
-                noAccountIsSet.printStackTrace();
-            }
+            throw new NoAccountIsSetException();
         }
 
+        fillContact(contact);
+
+        // Submit
+        saveButton.click();
+    }
+
+    public void fillContact(Contact contact) {
         // Fill Email Name Phone
         appiumDriver.hideKeyboard();
         emailEdit.sendKeys(contact.getEmail());
@@ -74,21 +77,19 @@ public class AddContactPage extends BasePage {
         emailType.click();
         selectContactType(contact.getEmailType());
 
-        // Submit
         appiumDriver.hideKeyboard();
-        saveButton.click();
     }
 
     /**
      * Add random contact to Contacts List
      */
-    public void addRandomContact() {
+    public void addRandomContact() throws NoAccountIsSetException {
         addContact(generateRandomContact());
     }
 
     // Check if AccountSpinner shows some Account
     private boolean isAccountSelected() {
-        return !accountSpinnerText.getText().isEmpty();
+        return !accountSpinner.getText().isEmpty();
     }
 
     /**
