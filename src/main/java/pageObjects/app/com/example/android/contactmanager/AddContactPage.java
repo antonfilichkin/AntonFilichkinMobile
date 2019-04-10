@@ -9,9 +9,10 @@ import testData.app.Contact;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static enums.app.PageNames.ADD_CONTACT;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.containsStringIgnoringCase;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static utils.ContactGenerator.generateRandomContact;
 
 public class AddContactPage extends BasePage {
@@ -36,7 +37,7 @@ public class AddContactPage extends BasePage {
     private WebElement phoneType;
 
     @FindBys({@FindBy(id = "contactPhoneTypeSpinner"),
-            @FindBy(className = "TextView")})
+            @FindBy(className = "android.widget.TextView")})
     private WebElement phoneTypeText;
 
     @FindBy(id = "contactEmailEditText")
@@ -46,7 +47,7 @@ public class AddContactPage extends BasePage {
     private WebElement emailType;
 
     @FindBys({@FindBy(id = "contactEmailTypeSpinner"),
-            @FindBy(className = "TextView")})
+            @FindBy(className = "android.widget.TextView")})
     private WebElement emailTypeText;
 
     @FindBy(id = "contactSaveButton")
@@ -94,12 +95,13 @@ public class AddContactPage extends BasePage {
         appiumDriver.hideKeyboard();
         assertThat(nameEdit.getText(), is(contact.getName()));
         assertThat(phoneEdit.getText(), is(contact.getPhone()));
-        assertThat(phoneTypeText.getText(), is(contact.getPhoneType()));
+        assertThat(phoneTypeText.getText(), containsStringIgnoringCase(contact.getPhoneType().toString()));
         assertThat(emailEdit.getText(), is(contact.getEmail()));
-        assertThat(emailTypeText.getText(), is(contact.getEmailType()));
+        assertThat(emailTypeText.getText(), containsStringIgnoringCase(contact.getEmailType().toString()));
 
         //contact.getPhoneType().ordinal();
     }
+
     /**
      * Add random contact to Contacts List
      */
