@@ -1,6 +1,5 @@
 package scenarios.nativeTests;
 
-import exceptions.NoAccountIsSetException;
 import org.testng.annotations.Test;
 import pageObjects.app.com.example.android.contactmanager.AddContactPage;
 import pageObjects.app.com.example.android.contactmanager.MainPage;
