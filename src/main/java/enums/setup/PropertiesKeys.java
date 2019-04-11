@@ -2,7 +2,7 @@ package enums.setup;
 
 public enum PropertiesKeys {
     APP_UNDER_TEST("aut"),
-    APP_PACKAGE("autPackage"),
+    APP_PACKAGE("appPackage"),
     APP_ACTIVITY("appActivity"),
     SITE_UNDER_TEST("sut"),
     DRIVER_URL("driver"),

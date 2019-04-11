@@ -1,5 +1,6 @@
 package scenarios.nativeTests;
 
+import exceptions.NoAccountIsSetException;
 import org.testng.annotations.Test;
 import pageObjects.app.com.example.android.contactmanager.AddContactPage;
 import pageObjects.app.com.example.android.contactmanager.MainPage;
@@ -14,7 +15,27 @@ public class SimpleNativeTest extends TestHooks {
     private static AddContactPage addContactPage;
 
     // Contact remains on device! It's impossible to remove created Contact by means of app. (((
-    @Test(description = "Test: It is possible to add new contact")
+    @Test(description = "Test: It is possible to fill contact elements")
+    public void testFillContact() throws Exception {
+        mainPage = new MainPage();
+        addContactPage = new AddContactPage();
+
+        // Open Add Contact page
+        mainPage.openAddContactPage();
+        addContactPage.checkTitle();
+
+        // Generating random contact
+        Contact contact = generateRandomContact();
+
+        // Add Contact
+        addContactPage.fillContact(contact);
+
+        // Check filled data
+        addContactPage.checkFilledContact(contact);
+    }
+
+    // Contact remains on device! It's impossible to remove created Contact by means of app. (((
+    @Test(enabled = false, description = "Test: It is possible to add new contact")
     public void testAddContact() throws Exception {
         mainPage = new MainPage();
         addContactPage = new AddContactPage();
